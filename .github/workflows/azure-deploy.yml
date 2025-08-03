@@ -1,0 +1,180 @@
+name: Deploy AcidTech Dashboard to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+      - production
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: acidtech-fintraqx-app
+  AZURE_WEBAPP_PACKAGE_PATH: './build'
+  NODE_VERSION: '18.x'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: './frontend/package-lock.json'
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci --only=production
+        
+    - name: Install API dependencies
+      run: |
+        cd api
+        npm ci --only=production
+    
+    - name: Run frontend tests
+      run: |
+        cd frontend
+        npm run test -- --coverage --watchAll=false
+        
+    - name: Run linting
+      run: |
+        cd frontend
+        npm run lint
+    
+    - name: Build frontend for production
+      run: |
+        cd frontend
+        npm run build:production
+      env:
+        CI: false
+        REACT_APP_B2C_CLIENT_ID: ${{ secrets.REACT_APP_B2C_CLIENT_ID }}
+        REACT_APP_B2C_TENANT_ID: ${{ secrets.REACT_APP_B2C_TENANT_ID }}
+        REACT_APP_B2C_AUTHORITY: ${{ secrets.REACT_APP_B2C_AUTHORITY }}
+        REACT_APP_B2C_SCOPES: ${{ secrets.REACT_APP_B2C_SCOPES }}
+        REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+        REACT_APP_DOMAIN: ${{ secrets.REACT_APP_DOMAIN }}
+        REACT_APP_REDIRECT_URI: ${{ secrets.REACT_APP_REDIRECT_URI }}
+        REACT_APP_LOGOUT_URI: ${{ secrets.REACT_APP_LOGOUT_URI }}
+    
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-files
+        path: |
+          frontend/build/
+          api/
+          !api/node_modules/
+        retention-days: 5
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-files
+        
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Deploy to Azure App Service (Staging)
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}-staging
+        slot-name: staging
+        package: .
+        
+    - name: Health check staging deployment
+      run: |
+        sleep 30
+        curl -f https://acidtech-fintraqx-app-staging.azurewebsites.net/health || exit 1
+
+  deploy-production:
+    name: Deploy to Production
+    needs: [build-and-test, deploy-staging]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production'
+    environment: production
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-files
+        
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Deploy to Azure App Service (Production)
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: .
+        
+    - name: Health check production deployment
+      run: |
+        sleep 60
+        curl -f https://app.acidtech.fintraqx.com/health || exit 1
+        
+    - name: Notify deployment success
+      if: success()
+      run: |
+        echo "=€ Production deployment successful!"
+        echo "URL: https://app.acidtech.fintraqx.com"
+        
+    - name: Notify deployment failure
+      if: failure()
+      run: |
+        echo "L Production deployment failed!"
+        exit 1
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run npm audit
+      run: |
+        cd frontend
+        npm audit --audit-level high
+        cd ../api
+        npm audit --audit-level high
+        
+    - name: Run CodeQL Analysis
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript
+        
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2

@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(az account:*)",
+      "Bash(az ad signed-in-user:*)",
+      "Bash(az ad app show:*)",
+      "Bash(az group:*)",
+      "Bash(az:*)",
+      "Bash(SQL_SERVER_NAME=\"acidtech-prod-sqlserver\")",
+      "Bash(SQL_DATABASE_NAME=\"acidtech-prod-db\")",
+      "Bash(KEY_VAULT_NAME=\"acidtech-prod-kv\")",
+      "Bash(APP_SERVICE_PLAN=\"acidtech-prod-plan\")",
+      "Bash(APP_INSIGHTS_NAME=\"acidtech-prod-insights\")",
+      "Bash(WEB_APP_NAME=\"acidtech-prod-app\")",
+      "Bash(STORAGE_ACCOUNT_NAME=\"acidtechprod45584\")",
+      "Bash(FUNCTION_APP_NAME=\"acidtech-prod-api\")",
+      "Bash(FUNCTION_APP_PRINCIPAL_ID=\"e6871653-5ba3-4138-a2e3-8d8d5b7abbe4\")",
+      "Bash(APPINSIGHTS_CONNECTION_STRING=\"InstrumentationKey=1ed39b53-8f4d-4d66-aedd-947d44a0008e;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/;ApplicationId=c3478d18-496a-4d0f-9329-94a47e3aabc8\")",
+      "Bash(npm cache clean:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run build:*)",
+      "Bash(ls:*)",
+      "Bash(npm start)",
+      "Bash(gh repo create:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(touch:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}
