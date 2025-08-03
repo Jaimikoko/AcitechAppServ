@@ -4,6 +4,7 @@ import { MsalProvider, AuthenticatedTemplate, UnauthenticatedTemplate } from '@a
 import { PublicClientApplication } from '@azure/msal-browser';
 import { msalConfig } from './config/authConfig';
 import AppLayout from './components/layout/AppLayout';
+import Dashboard from './pages/Dashboard';
 import ComingSoon from './pages/ComingSoon';
 import Login from './components/Login/Login';
 import './styles/index.css';
@@ -19,8 +20,8 @@ function App() {
           <AuthenticatedTemplate>
             <AppLayout>
               <Routes>
-                {/* Dashboard Principal */}
-                <Route path="/" element={<ComingSoon module="Dashboard" priority={3} />} />
+                {/* Dashboard Principal - Flask Integration */}
+                <Route path="/" element={<Dashboard />} />
                 
                 {/* PRIORIDAD 1: Cash Flow - CRÍTICO */}
                 <Route path="/cashflow" element={<ComingSoon module="Cash Flow" priority={1} />} />

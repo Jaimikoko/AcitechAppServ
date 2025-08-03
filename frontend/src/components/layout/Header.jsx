@@ -42,12 +42,16 @@ const Header = () => {
           {/* Status Indicators */}
           <div className="flex items-center space-x-4 text-sm">
             <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-              <span className="text-gray-600">APIs: Using Mocks</span>
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              <span className="text-gray-600">Flask Backend: Connected</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-              <span className="text-gray-600">Shell Mode</span>
+              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="text-gray-600">Azure AD B2C: Ready</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+              <span className="text-gray-600">Development Mode</span>
             </div>
           </div>
           

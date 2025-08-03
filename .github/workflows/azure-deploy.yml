@@ -1,4 +1,4 @@
-name: Deploy AcidTech Dashboard to Azure App Service
+name: Deploy AcidTech Flask API to Azure App Service
 
 on:
   push:
@@ -9,53 +9,47 @@ on:
 env:
   AZURE_WEBAPP_NAME: acidtech-prod-app
   AZURE_FUNCTIONAPP_NAME: acidtech-prod-api
-  NODE_VERSION: '20.x'
+  PYTHON_VERSION: '3.11'
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy
+    name: Build and Deploy Flask API
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
       with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        cache-dependency-path: './frontend/package-lock.json'
+        python-version: ${{ env.PYTHON_VERSION }}
     
-    - name: Install frontend dependencies
+    - name: Create virtual environment
       run: |
-        cd frontend
-        npm ci
+        python -m venv venv
+        source venv/bin/activate
         
-    - name: Build frontend for production
+    - name: Install Python dependencies
       run: |
-        cd frontend
-        npm run build
-      env:
-        CI: false
-        REACT_APP_B2C_CLIENT_ID: 13a56f1f-1b3d-4d48-aee8-53b5159513db
-        REACT_APP_B2C_TENANT_ID: 920837c8-5551-4a12-9d1a-78db9913ca56
-        REACT_APP_B2C_AUTHORITY: https://fintraqx.b2clogin.com/fintraqx.onmicrosoft.com/B2C_1_SignUpSignIn
-        REACT_APP_B2C_KNOWN_AUTHORITIES: fintraqx.b2clogin.com
-        REACT_APP_B2C_SCOPES: https://fintraqx.onmicrosoft.com/acidtech-api/access_as_user
-        REACT_APP_API_BASE_URL: https://acidtech-prod-api.azurewebsites.net/api
-        REACT_APP_REDIRECT_URI: https://acidtech-prod-app.azurewebsites.net
-        REACT_APP_LOGOUT_URI: https://acidtech-prod-app.azurewebsites.net/logout
-        GENERATE_SOURCEMAP: false
+        source venv/bin/activate
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run Flask tests (if any)
+      run: |
+        source venv/bin/activate
+        # Add test commands here if tests exist
+        echo "No tests configured yet"
     
-    - name: Deploy to Azure Web App
+    - name: Deploy Flask API to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ./frontend/build
+        package: .
 
-    - name: Deploy to Azure Function App
+    - name: Deploy to Azure Function App (Optional)
       uses: azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}

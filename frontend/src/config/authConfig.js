@@ -7,14 +7,14 @@
 // B2C Configuration for Fintraqx tenant
 const b2cConfig = {
     // App Registration Details
-    clientId: process.env.REACT_APP_B2C_CLIENT_ID || "13a56f1f-1b3d-4d48-aee8-53b5159513db",
+    clientId: process.env.REACT_APP_CLIENT_ID || "13a56f1f-1b3d-4d48-aee8-53b5159513db",
     
     // Tenant Configuration - NEW TENANT
     tenantName: "fintraqx",
-    tenantId: process.env.REACT_APP_B2C_TENANT_ID || "920837c8-5551-4a12-9d1a-78db9913ca56",
+    tenantId: process.env.REACT_APP_TENANT_ID || "920837c8-5551-4a12-9d1a-78db9913ca56",
     
     // B2C Authority and Endpoints
-    authority: process.env.REACT_APP_B2C_AUTHORITY || "https://fintraqx.b2clogin.com/fintraqx.onmicrosoft.com/B2C_1_SignUpSignIn",
+    authority: process.env.REACT_APP_AUTHORITY || "https://fintraqx.b2clogin.com/fintraqx.onmicrosoft.com/B2C_1_SignUpSignIn",
     knownAuthorities: [process.env.REACT_APP_B2C_KNOWN_AUTHORITIES || "fintraqx.b2clogin.com"],
     
     // Redirect URLs - Azure App Service Domain
@@ -33,7 +33,7 @@ const b2cConfig = {
         "openid",
         "profile", 
         "email",
-        process.env.REACT_APP_B2C_SCOPES || "https://fintraqx.onmicrosoft.com/acidtech-api/access_as_user"
+        process.env.REACT_APP_SCOPES || "api://acidtech-api/access_as_user"
     ],
     
     // Cache Configuration
