@@ -8,7 +8,6 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: acidtech-prod-app
-  AZURE_FUNCTIONAPP_NAME: acidtech-prod-api
   PYTHON_VERSION: '3.11'
 
 jobs:
@@ -49,16 +48,10 @@ jobs:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: .
 
-    - name: Deploy to Azure Function App (Optional)
-      uses: azure/functions-action@v1
-      with:
-        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-        package: ./api
-        
     - name: Notify deployment success
       if: success()
       run: |
-        echo "🎉 Deployment successful!"
-        echo "Frontend URL: https://acidtech-prod-app.azurewebsites.net"
-        echo "API URL: https://acidtech-prod-api.azurewebsites.net"
+        echo "🎉 Flask API Deployment successful!"
+        echo "Flask API URL: https://acidtech-prod-app.azurewebsites.net"
+        echo "Health Check: https://acidtech-prod-app.azurewebsites.net/health"
+        echo "Dashboard: https://acidtech-prod-app.azurewebsites.net"
