@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>Dashboard Financiero</h1>
+    
+    <div class="cards-grid">
+        <div class="card">
+            <h3>Transacciones</h3>
+            <p>Gestiona tus ingresos y gastos</p>
+            <a href="{{ url_for('transactions') }}" class="btn btn-primary">Ver Transacciones</a>
+        </div>
+        
+        <div class="card">
+            <h3>Agregar Transacción</h3>
+            <p>Registra una nueva transacción</p>
+            <a href="{{ url_for('add_transaction') }}" class="btn btn-success">Agregar</a>
+        </div>
+        
+        <div class="card">
+            <h3>Reportes</h3>
+            <p>Analiza tu situación financiera</p>
+            <a href="{{ url_for('reports') }}" class="btn btn-info">Ver Reportes</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcidTech Financial Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AcidTech Financial Dashboard</h1>
+            <p>Gestiona tus finanzas de manera inteligente</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">$0.00</div>
+                    <div class="stat-label">Balance Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$0.00</div>
+                    <div class="stat-label">Ingresos del Mes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$0.00</div>
+                    <div class="stat-label">Gastos del Mes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Transacciones</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <h3>Transacciones</h3>
+                <p>Registra y gestiona todos tus ingresos y gastos de manera organizada.</p>
+                <a href="#" class="btn">Ver Transacciones</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Reportes</h3>
+                <p>Analiza tus patrones de gasto y obtén insights sobre tu salud financiera.</p>
+                <a href="#" class="btn">Ver Reportes</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🎯</div>
+                <h3>Presupuesto</h3>
+                <p>Establece metas financieras y monitorea tu progreso hacia objetivos.</p>
+                <a href="#" class="btn">Gestionar Presupuesto</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💳</div>
+                <h3>Cuentas</h3>
+                <p>Administra múltiples cuentas bancarias y tarjetas desde un solo lugar.</p>
+                <a href="#" class="btn">Ver Cuentas</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h3>Inversiones</h3>
+                <p>Monitorea tu portafolio de inversiones y analiza el rendimiento.</p>
+                <a href="#" class="btn">Ver Inversiones</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Configuración</h3>
+                <p>Personaliza la aplicación según tus necesidades y preferencias.</p>
+                <a href="#" class="btn">Configurar</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 AcidTech Financial Dashboard - Tu socio en gestión financiera</p>
+        </div>
+    </div>
+</body>
+</html>

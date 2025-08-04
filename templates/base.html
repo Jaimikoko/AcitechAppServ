@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AcidTech Financial Dashboard{% endblock %}</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-brand">AcidTech</a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('home') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('transactions') }}">Transacciones</a></li>
+                <li><a href="{{ url_for('add_transaction') }}">Agregar</a></li>
+                <li><a href="{{ url_for('reports') }}">Reportes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 AcidTech Financial Dashboard</p>
+    </footer>
+</body>
+</html>
