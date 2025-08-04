@@ -16,43 +16,43 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
       
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-    
-    - name: Create virtual environment
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        
-    - name: Install Python dependencies
-      run: |
-        source venv/bin/activate
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        
-    - name: Run Flask tests
-      run: |
-        source venv/bin/activate
-        # Run pytest tests
-        python -m pytest tests/ -v --tb=short
-        echo "Flask tests completed"
-    
-    - name: Deploy Flask API to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: .
+      - name: Create virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          
+      - name: Install Python dependencies
+        run: |
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Run Flask tests
+        run: |
+          source venv/bin/activate
+          # Run pytest tests
+          python -m pytest tests/ -v --tb=short
+          echo "Flask tests completed"
+      
+      - name: Deploy Flask API to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
 
-    - name: Notify deployment success
-      if: success()
-      run: |
-        echo "🎉 Flask API Deployment successful!"
-        echo "Flask API URL: https://acidtech-prod-app.azurewebsites.net"
-        echo "Health Check: https://acidtech-prod-app.azurewebsites.net/health"
-        echo "Dashboard: https://acidtech-prod-app.azurewebsites.net"
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "Flask API Deployment successful!"
+          echo "Flask API URL: https://acidtech-prod-app.azurewebsites.net"
+          echo "Health Check: https://acidtech-prod-app.azurewebsites.net/health"
+          echo "Dashboard: https://acidtech-prod-app.azurewebsites.net"
