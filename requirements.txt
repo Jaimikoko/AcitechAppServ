@@ -1,10 +1,46 @@
+# Flask Core
 Flask==3.0.0
 Flask-CORS==4.0.0
-pyodbc==5.0.1
-PyJWT==2.8.0
-requests==2.31.0
+Werkzeug==3.0.1
+
+# Configuration and Environment
 python-dotenv==1.0.0
-gunicorn==21.2.0
+
+# Database
+pyodbc==5.0.1
+
+# Authentication and Security
+PyJWT==2.8.0
+cryptography==41.0.7
+
+# HTTP Requests
+requests==2.31.0
+
+# Azure Services
 azure-identity==1.15.0
 azure-keyvault-secrets==4.7.0
-Werkzeug==3.0.1
+
+# Production Server
+gunicorn==21.2.0
+
+# Development and Testing
+pytest==7.4.3
+pytest-flask==1.3.0
+pytest-cov==4.1.0
+
+# Data Processing
+pandas==2.1.4
+openpyxl==3.1.2
+
+# File Handling
+Pillow==10.1.0
+
+# Rate Limiting
+Flask-Limiter==3.5.0
+
+# Logging
+structlog==23.2.0
+
+# Utilities
+click==8.1.7
+python-dateutil==2.8.2

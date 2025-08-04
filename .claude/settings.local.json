@@ -40,7 +40,8 @@
       "Bash(curl:*)",
       "Bash(gh secret:*)",
       "Bash(gh workflow run:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(python:*)"
     ],
     "deny": []
   }
