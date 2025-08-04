@@ -41,7 +41,11 @@
       "Bash(gh secret:*)",
       "Bash(gh workflow run:*)",
       "Bash(rm:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(dir \"C:\\Users\\Acid Acct1\\Documents\\Cash_Flow_APP\\AcitechAppServ\\.github\\workflows\")",
+      "Bash(gh workflow:*)",
+      "Bash(mv:*)",
+      "Bash(dir .githubworkflows)"
     ],
     "deny": []
   }
