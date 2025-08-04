@@ -13,7 +13,17 @@ load_dotenv()
 
 def create_app(config_name=None):
     """Application factory pattern with configuration"""
-    app = Flask(__name__)
+    # Configure Flask to serve React frontend build
+    import os
+    
+    # Set static folder to React build directory
+    static_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'frontend', 'build')
+    template_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'frontend', 'build')
+    
+    app = Flask(__name__, 
+                static_folder=static_folder,
+                static_url_path='',
+                template_folder=template_folder)
     
     # Load configuration
     if config_name is None:
@@ -63,28 +73,56 @@ def create_app(config_name=None):
     app.register_blueprint(transactions_bp, url_prefix='/api/transactions')
     app.register_blueprint(system_logs_bp, url_prefix='/api/system-logs')
     
-    # Root endpoint
+    # Serve React frontend
     @app.route('/')
-    def home():
-        return jsonify({
-            'message': '🚀 AcidTech Flask API funcionando',
-            'version': '2.0.0',
-            'environment': app.config.get('FLASK_ENV', 'development'),
-            'timestamp': datetime.utcnow().isoformat(),
-            'endpoints': {
-                'health': '/health',
-                'auth': '/api/auth',
-                'purchase_orders': '/api/purchase-orders',
-                'transactions': '/api/transactions',
-                'system_logs': '/api/system-logs'
-            },
-            'features': {
-                'authentication': 'Azure AD B2C',
-                'database': 'Azure SQL / SQLite',
-                'middleware': ['CORS', 'Rate Limiting', 'Logging', 'Auth'],
-                'testing': 'pytest'
-            }
-        })
+    def serve_react_app():
+        """Serve React frontend index.html"""
+        try:
+            return app.send_static_file('index.html')
+        except Exception as e:
+            # Fallback to API info if React build not available
+            return jsonify({
+                'message': '🚀 AcidTech Flask API funcionando',
+                'version': '2.0.0',
+                'environment': app.config.get('FLASK_ENV', 'development'),
+                'timestamp': datetime.utcnow().isoformat(),
+                'note': 'React frontend not built yet',
+                'build_error': str(e),
+                'endpoints': {
+                    'health': '/health',
+                    'auth': '/api/auth',
+                    'purchase_orders': '/api/purchase-orders',
+                    'transactions': '/api/transactions',
+                    'system_logs': '/api/system-logs'
+                }
+            })
+    
+    # Catch-all route for React routing (SPA)
+    @app.route('/<path:path>')
+    def serve_react_routes(path):
+        """Serve React app for all non-API routes"""
+        # If it's an API route, let it pass through to the 404 handler
+        if path.startswith('api/'):
+            from flask import abort
+            abort(404)
+        
+        # If it's a static file request, serve it directly
+        if '.' in path:
+            try:
+                return app.send_static_file(path)
+            except:
+                from flask import abort
+                abort(404)
+        
+        # For all other routes, serve React index.html (SPA routing)
+        try:
+            return app.send_static_file('index.html')
+        except:
+            return jsonify({
+                'error': 'Frontend not available',
+                'message': 'React build not found',
+                'path': path
+            }), 404
     
     # Health check endpoint
     @app.route('/health')
