@@ -37,7 +37,10 @@
       "Bash(gh run view:*)",
       "Bash(zip:*)",
       "Bash(powershell:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(gh secret:*)",
+      "Bash(gh workflow run:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }
